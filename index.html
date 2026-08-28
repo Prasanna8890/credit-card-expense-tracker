@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#155e75" />
+    <title>Credit Card Expense Tracker</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div><p class="eyebrow">SHARED LEDGER</p><h1>Credit Card Expense Tracker</h1></div>
+        <div class="header-actions"><button class="secondary" id="refreshButton">Refresh</button><button class="secondary" id="exportButton">Export CSV</button></div>
+      </header>
+
+      <section class="hero">
+        <div><p class="eyebrow">TOTAL THIS MONTH</p><strong id="monthTotal">₹0</strong><span id="monthLabel"></span></div>
+        <button class="add-button" id="openAddButton">＋ Add Expense</button>
+      </section>
+
+      <section class="metrics" aria-label="Spending summary">
+        <article class="metric"><span>Total spending</span><strong id="totalSpending">₹0</strong></article>
+        <article class="metric"><span>Transactions</span><strong id="transactionCount">0</strong></article>
+        <article class="metric"><span>Current month</span><strong id="currentMonthSpending">₹0</strong></article>
+      </section>
+
+      <section><div class="section-heading"><div><p class="eyebrow">YOUR CARDS</p><h2>Card-wise spending</h2></div><button class="text-button" id="openCardsButton">Configure cards</button></div><div class="card-grid" id="cardSummary"></div></section>
+
+      <section class="two-columns">
+        <div class="panel"><div class="section-heading"><div><p class="eyebrow">OVERVIEW</p><h2>By category</h2></div></div><div id="categorySummary" class="category-summary"></div></div>
+        <div class="panel"><div class="section-heading"><div><p class="eyebrow">BILLING CYCLES</p><h2>Current cycle</h2></div></div><div id="billingSummary" class="billing-summary"></div></div>
+      </section>
+
+      <section class="panel history"><div class="section-heading"><div><p class="eyebrow">RECENT EXPENSES</p><h2>Transactions</h2></div><button class="text-button" id="showAllButton">View all</button></div>
+        <div class="filters" id="filters">
+          <input id="searchInput" type="search" placeholder="Search expenses" />
+          <select id="cardFilter"><option value="">All cards</option></select>
+          <input id="monthFilter" type="month" />
+          <select id="categoryFilter"><option value="">All categories</option></select>
+          <select id="sortFilter"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select>
+        </div>
+        <div id="transactionList" class="transaction-list"></div>
+      </section>
+    </main>
+
+    <dialog id="expenseDialog"><form id="expenseForm" method="dialog" novalidate>
+      <div class="modal-heading"><div><p class="eyebrow" id="expenseDialogEyebrow">NEW EXPENSE</p><h2 id="expenseDialogTitle">Add expense</h2></div><button type="button" class="icon-button" data-close="expenseDialog" aria-label="Close">×</button></div>
+      <input type="hidden" id="expenseId" />
+      <label>Amount <span class="required">*</span><input id="amount" type="number" inputmode="decimal" min="0.01" step="0.01" placeholder="0" required /></label>
+      <label>Description <span class="required">*</span><input id="description" maxlength="120" placeholder="e.g. Groceries" required /></label>
+      <div class="form-row"><label>Credit card <span class="required">*</span><select id="cardId" required></select></label><label>Date <input id="expenseDate" type="date" required /></label></div>
+      <div class="form-row"><label>Category <input id="category" list="categorySuggestions" maxlength="50" placeholder="Optional" /><datalist id="categorySuggestions"><option>Food & Dining</option><option>Groceries</option><option>Travel</option><option>Shopping</option><option>Bills</option><option>Health</option><option>Entertainment</option><option>Other</option></datalist></label><label>Merchant <input id="merchant" maxlength="80" placeholder="Optional" /></label></div>
+      <label>Notes <textarea id="notes" maxlength="500" rows="2" placeholder="Optional"></textarea></label>
+      <label class="checkbox"><input id="isEmi" type="checkbox" /> EMI / installment</label>
+      <p id="formError" class="form-error" role="alert"></p><div class="modal-actions"><button type="button" class="secondary" data-close="expenseDialog">Cancel</button><button class="primary" id="saveExpenseButton" type="submit">Save expense</button></div>
+    </form></dialog>
+
+    <dialog id="cardsDialog"><form id="cardsForm" method="dialog" novalidate><div class="modal-heading"><div><p class="eyebrow">SETTINGS</p><h2>Configure cards</h2></div><button type="button" class="icon-button" data-close="cardsDialog" aria-label="Close">×</button></div><div id="cardSettings"></div><p id="cardFormError" class="form-error" role="alert"></p><div class="modal-actions"><button type="button" class="secondary" data-close="cardsDialog">Cancel</button><button class="primary" type="submit">Save cards</button></div></form></dialog>
+
+    <dialog id="confirmDialog"><div class="modal-heading"><div><p class="eyebrow">PLEASE CONFIRM</p><h2>Delete this expense?</h2></div></div><p>This can’t be undone.</p><div class="modal-actions"><button class="secondary" id="cancelDelete">Cancel</button><button class="danger" id="confirmDelete">Delete expense</button></div></dialog>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script src="config.js"></script><script src="app.js"></script>
+  </body>
+</html>
